@@ -111,9 +111,10 @@ public class FileScanner {
 
         int iterator = 0;
         while(fileReader.hasNext()){
-            classNames[iterator] = parent + "\\" + (fileReader.nextLine());
-            
-            iterator++;
+        	
+        		classNames[iterator] = parent + "\\" + fileReader.nextLine();;
+        		iterator++;
+        	
 
         }
         
@@ -132,36 +133,44 @@ public class FileScanner {
      *      3rd Col: Letter Grade
      */
 
+    /**
+     * @param f
+     * @return
+     * @throws FileNotFoundException
+     */
     public String[][] sectionParse(File f) throws FileNotFoundException{
         Scanner scan = new Scanner(f);
         String s = scan.nextLine();
-        System.out.println(s);
-        String[] temp = s.split("  ");
-        sectionName = temp[0];
-        gpa = temp[1];
+        
+        String[] temp = s.split(" ");
+        this.sectionName = temp[0];
+        System.out.println();
+        gpa = temp[temp.length-1];
         int iterator = 0;
         
         while(scan.hasNextLine()){
-            iterator++;
-            scan.nextLine();
+        scan.nextLine();
+          iterator++; 
         }
-        System.out.println(iterator);
+         
+        
         scan.close();
+        System.out.println(iterator);
+        
         Scanner input = new Scanner(f);
         input.nextLine();
-        String[][] section = new String[iterator][4];
+        String[][] section = new String[iterator][3];
         for(int i = 0; i < iterator; i++){
             String x = input.nextLine();
             String[] array = x.split(",");
+            
             section[i][0] = array[0] + "," + array[1];
             section[i][1] = array[2];
-            section[i][2] = array[3];
+            section[i][2] = array[array.length-1]; //letterGrade
             
         }
         input.close();
         return section;
-
-       
     }
 
 
