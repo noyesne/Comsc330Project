@@ -1,18 +1,19 @@
 package com.gradeproject;
 
 import java.io.*;
+import com.gradeproject.*;
 import java.lang.reflect.Array;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /*
- * Things for this file to complete: 
- * --> Will be able to run for multiple run files
- * --> Get the Directory which all files are stored in
- * --> run the GRP's and respective SEC's in a orderly fasion
- *                  This might be a problem with run time, luckily file sizes are small
- * 
- * 
- * 
+ * UPDATED MAIN:
+ * 3/19/24
+ * IMPLEMENT A DATA STUCTURE IF POSSIBLE
+ * PRINT ALL OF THE STATISTICS
+ * MAKE THE FILEWRITER
  * 
  * 
  * 
@@ -20,58 +21,75 @@ import java.util.Scanner;
 
 
 public class Main {
-    
-
-    
+    private static String groupName = "";
+    private static String sectionName ="";
+    private static String[] A_array;
+    private static String[] f_array;
+    private static double sectionGPA;
 
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("START RUN TEST");
         String[] arr = setRunFile();
-        for(int i = 0; i < arr.length; i++){
-            System.out.println(arr[i]);
-        }
-        System.out.println("END RUN FILE TEST \n\n");
+      
+        for(int x = 0; x < arr.length; x++){
+           
         
 
-
-            
-            //String name = scan.nextLine();
-            //scan.close();
-
-
-            /*
-             * PROBLEMS:
-             *      I still do not know how to go through the array the right way
-             * 
-             * Author: Jack Noyes 
-             * 
-             * 
-             */
-            System.out.println("START GRP TEST");
-            String[] arr2;
-            for(int i = 0; i < arr.length; i++){
-                arr2 = runGRP(arr[i]);
-                for(int j = 0; j < arr2.length; j++){
-                    System.out.println(arr2[j]);
-                    String[][] arr3 = runSEC(arr2[j]);
-                    System.out.println(arr3.length);
-                }
+        
+        //LinkedList<String> grpList = new LinkedList<String>();
+        //Make a queue? 
+        // LinkedQueue<String> grpQ = new LinkedQueue<String>();
+        String[] grpArray = runGRP(arr[x]);
+        System.out.println("Group Name: " + groupName + "\n");
+        for(int i = 0; i < grpArray.length; i++) {
+        	sectionGPA = 0.0;
+	        String[][] secArray = runSEC(grpArray[i]);
+	        String[] grades = new String[secArray.length];
+	        for(int j = 0; j < secArray.length; j++){
+	        	grades[j] = secArray[j][2];
+                
+	        	
+	            }
+	        
+	   
+	        
+	        runStats(sectionName, grades);
+	        System.out.println("AVG GPA for section " + sectionName + ": "+ String.format("%,.2f", sectionGPA));
+	       
+        
             }
+            
+        }    
                 
             
-            System.out.println("END GRP TEST\n\n");
+       
 
 
 
-            System.out.println("START SEC TEST");
-           
-
+            
+           /*
+            Method For printing out the files in succession:
+            Needs: to create an efficient way of reading through and accessing the appropriate data
+            Ideas: 
+                - Make the function recursive while using a global array of SECs that is changed every time a SEC is run
+                - Use the function within a for loop (but that is the same way we have it now so its dumb)
+            */
 
         
         
     }
 
-    //returns an Array full of filepaths to the .GRP files
+    /*
+     * Method: setRunFile
+     * Arguments: void
+     * 
+     * Purpose: This method will set the run file up by scanning thorugh the .RUN file to get the respective
+     * 
+     * 
+     * 
+     * 
+     */
+
     public static String[] setRunFile(){
         System.out.println("Please enter the .RUN file you wish to run");
         Scanner kybd;
@@ -111,6 +129,7 @@ public class Main {
         FileScanner fileScanner = new FileScanner(f);
         fileScanner.setFileParent(f);
         fileScanner.parseRunFile(f);
+        groupName = fileScanner.getName();
 
         section = fileScanner.getArray();
 
@@ -121,16 +140,32 @@ public class Main {
     }
 
     public static String[][] runSEC(String s) throws FileNotFoundException{
-        String[][] classes; 
+       
         File f = new File(s);
         FileScanner fileScanner = new FileScanner(f);
-
-        classes = fileScanner.sectionParse(f);
-        System.out.println(fileScanner.getSection() + " " + fileScanner.getGPA());
-        return classes; 
+        
+        String[][] sections = fileScanner.sectionParse(f);
+        
+        sectionName = fileScanner.getSection();
+        
+        System.out.println("Section: " + fileScanner.getSection() + " Credit Hours: " + fileScanner.getGPA());
+        return sections ; 
     }
 
+    //Attempt at making the section name
+    public static void runStats(String name, String[] grades){
+        List<Grade> list = new LinkedList<Grade>();
+          for(int i = 0; i < grades.length; i++) {
+        	  Grade grade = new Grade(grades[i]);
+        	  list.add(grade);
+          }
+          StatisticsAnalyzer stat = new StatisticsAnalyzer();
+          sectionGPA += stat.computeSectionGPA(list);
+          
+            
+           
 
+    }
 
 
 
