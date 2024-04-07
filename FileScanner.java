@@ -1,4 +1,4 @@
-package com.gradeproject;
+package jsjf;
 /*
  * FileScanner Class
  * Author: Jack Noyes
@@ -24,6 +24,7 @@ public class FileScanner {
     private File file;
     private String sectionName = "";
     private String gpa = "";
+    private int studentNumbers = 0;
 
 
     String name = "";
@@ -42,6 +43,7 @@ public class FileScanner {
         }catch(Exception ex){
             System.err.println("Please make sure that the file is in the right directory and ends with .run");
         }
+        kybd.close();
     }
     //Constructor, File argument: This constructor will be primarily used for the .GRP & .SEC files that will be parsed through later
     public FileScanner(File f) throws FileNotFoundException{
@@ -89,8 +91,12 @@ public class FileScanner {
         return sectionName;
     }
 
-    public Double getGPA(){
+    public double getGPA(){
         return Double.parseDouble(gpa);
+    }
+
+    public int getstudentNumbers(){
+        return studentNumbers;
     }
  
     /*
@@ -155,7 +161,8 @@ public class FileScanner {
          
         
         scan.close();
-        System.out.println(iterator);
+        studentNumbers = iterator;
+        
         
         Scanner input = new Scanner(f);
         input.nextLine();
