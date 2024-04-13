@@ -141,7 +141,7 @@ public class FileScanner {
 
     /**
      * @param f
-     * @return
+     * @return STRING[][] 
      * @throws FileNotFoundException
      */
     public String[][] sectionParse(File f) throws FileNotFoundException{
@@ -150,7 +150,7 @@ public class FileScanner {
         
         String[] temp = s.split(" ");
         this.sectionName = temp[0];
-        System.out.println();
+        
         gpa = temp[temp.length-1];
         int iterator = 0;
         
