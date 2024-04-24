@@ -33,16 +33,28 @@ public class FileScanner {
 
     //Non-Argument Constructor: Allows user to input the .RUN file they wish
     public FileScanner() throws FileNotFoundException{
+    	
         Scanner kybd = new Scanner(System.in);
-        System.out.println("Please enter the complete path of the .RUN file");
-        filePath = kybd.nextLine();
         
+        System.out.println("Please enter the complete path of the .RUN file");
+       
+        filePath = kybd.nextLine();
+        int length = 0;
         try{
             file = new File(filePath);
             setFileName(file);
+            setFileParent(file);
+            Scanner fileReader = new Scanner(file);
+            while(fileReader.hasNext()){
+                fileReader.nextLine();
+                length++;
+            }
+            fileReader.close();
+           
         }catch(Exception ex){
             System.err.println("Please make sure that the file is in the right directory and ends with .run");
         }
+        classNames = new String[length-1];
         kybd.close();
     }
     //Constructor, File argument: This constructor will be primarily used for the .GRP & .SEC files that will be parsed through later
@@ -117,12 +129,10 @@ public class FileScanner {
 
         int iterator = 0;
         while(fileReader.hasNext()){
-        	
         		classNames[iterator] = parent + "\\" + fileReader.nextLine();;
         		iterator++;
-        	
-
         }
+        
         
 
         fileReader.close();
@@ -182,35 +192,6 @@ public class FileScanner {
 
 
 
-    /*
-     * Method: ParseFileString
-     * Argument: FILE object
-     * Purpose: To find the directory at which the .RUN file is stored, assuming all of the 
-     *          .GRP's and .SEC's are in that same directory
-     * 
-     * Possible Errors: Due to the '\' character being used as a formatter 
-     *                  there is a possible error where it 
-     *                  runs into a problem piecing the string back together
-     * 
-     * TURNS OUT THIS IS NOT NEEDED SINCE FILE.GETPARENT() EXISTS FML
-     * 
-     *
-    public void parseFileString(File f){ //Question Should this be a void or is it better to just return the String
-        //Need to figure how to just get the path;
-
-         //This will get C:\Users\jackn\Documents\sample.txt
-        filePath = f.getAbsolutePath(); 
-        
-       //This spilts the string where-ever there is a '\' (hopefully)
-        String arrString[] = filePath.split("'\'"); 
-        
-        //For loop: Will get everything other than the actual file name since that will be produced by the constructor
-        for(int i = 0; i < arrString.length - 1; i++){
-            fileParent+= arrString[i] + "'\'"; //creating the prefix as a string such that it can be used to find the .GRP and .SEC files --> if they are in the same directory
-        }
-
-        }
-     */
        
     
 

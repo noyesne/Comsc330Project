@@ -21,7 +21,7 @@ public class StatisticsAnalyzer {
     }
 
     // Method to compute GPA for a section
-    public double computeSectionGPA(List<Grade> grades, String[] names) {
+    public double computeSectionGPA(List<Grade> grades, String[] names, String section, String[] ids) {
 		Main m = new Main();
 		
     	int count = 0;
@@ -30,6 +30,7 @@ public class StatisticsAnalyzer {
         while(count < grades.size()) {
         	
         	String name = names[count];
+        	String id = ids[count];
         	Grade grade = grades.get(count);
         	String g = grade.getGrade();
         	char letter = g.charAt(1);
@@ -37,7 +38,7 @@ public class StatisticsAnalyzer {
         	
         	switch(letter) {
         	case 'A':
-        		m.addA(name);
+        		m.addA(name, id, section);
         		if(symbol == '-') {
         			avg += 3.7;
         			m.addElement(3.7);
@@ -76,7 +77,7 @@ public class StatisticsAnalyzer {
         		}
         		break;
         	case 'D':
-        		m.addF(name);
+        		m.addF(name, id, section);
         		if(symbol == '+') {
         			avg += 1.3;
         			m.addElement(1.3);
@@ -91,17 +92,18 @@ public class StatisticsAnalyzer {
         		}
         		break;
         	case 'F':
-        		m.addF(name);
+        		m.addF(name,id,section);
         		avg += 0.0;
         		m.addElement(0.0);
         		
         		break;
         	default:
+        		size--;
         		break;
         	}
         	count++;
         }
-		;
+		
         return avg/size; // Placeholder, implement actual calculation
     }
 
@@ -124,7 +126,7 @@ public class StatisticsAnalyzer {
     // Other methods for analyzing grades and generating reports as per project requirements...
 
 }
-
+/*
 class Section {
     private String sectionId;
     private List<Grade> grades;
@@ -138,6 +140,7 @@ class Section {
         return grades;
     }
 }
+*/
 
 class Grade {
     private String courseId;
