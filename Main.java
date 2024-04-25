@@ -1,10 +1,8 @@
 package jsjf;
 
 import java.io.*;
-import jsjf.*;
-import java.lang.reflect.Array;
+
 import java.util.Scanner;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -52,13 +50,15 @@ public class Main {
      */
     public static void main(String[] args) throws FileNotFoundException {
     	Scanner input = new Scanner(System.in);
-    	//This part is made 
-    	do {
-    	System.out.println("Please enter the .RUN file you wish to run");
-    	String s = input.nextLine();
-    	System.out.println("WORKING....");
     	
-        String[] arr = setRunFile(args[0]); //This gets the Array of .grp files
+     
+    	//This part is made 
+    	
+    	System.out.println("Please enter the .RUN file you wish to run"); //YOU CAN TAKE THIS LINE
+    	String s = input.nextLine(); //args[counter-1]
+    	System.out.println("WORKING....");//YOU CAN TAKE THIS LINE
+    	
+        String[] arr = setRunFile(s); //This gets the Array of .grp files
        
         
         try {
@@ -192,19 +192,13 @@ public class Main {
 			}
        ///THIS IS FOR THE LOOP IN THE CONSOLE BASED PROGRAM AND CAN BE TAKEN OUT OF THE UI PORTION PLESE CHECK 
         //LINE 6 AND CORRECT ACCORDINGLY
-        System.out.println("Would you like to do another run? (please answer with yes or no)");
-        String answer = input.nextLine();
-       
-        if(answer.equalsIgnoreCase("yes")) {
-        	counter++;
-        }else {
-        	counter = maxRuns;
-        }
+       	
+        counter++;
     	
-    	}while(counter < maxRuns);
-    	System.out.println("THANK YOU HAVE A GOOD DAY");
-        	input.close();
+        input.close();
     }
+    	
+    
     
             
             
@@ -398,12 +392,12 @@ public class Main {
     		int count = 1;
     		StudentNode check = l.remove();
     		String id = check.getID();
-    		int innerCount = 1;
+    		
     		
 	    	while(count <= l.size()) {
 	    		StudentNode tempNode2 = l.get(count-1);
 	    		if(id.equalsIgnoreCase(tempNode2.getID())) {
-	    			innerCount++;
+	    			
 	    			if(check.section.equalsIgnoreCase(tempNode2.section)){
 	    				setCatch(check.section);
 	    				check.setSection(check.section + ", " + tempNode2.section);
