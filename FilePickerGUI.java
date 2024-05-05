@@ -15,8 +15,8 @@ public class FilePickerGUI extends JFrame implements ActionListener {
     private JTextPane byLine;
     
     
-    private String[] arr = new String[1];
-    
+    private String[] arr = new String[1]; //stores the file path to the run file
+    //Constructur which creates the certain fields
     public FilePickerGUI() {
         setTitle("Grade Calculator App");
         setSize(600, 300);
@@ -49,8 +49,12 @@ public class FilePickerGUI extends JFrame implements ActionListener {
         add(byLine);
         
     }
-    
-    public void actionPerformed(ActionEvent e) {
+    //This method checks to see the which button was pressed and what to do based off of that
+    public void actionPerformed(ActionEvent e) { 
+        /*
+        * When the "Select File" button is clicked it opens up a window to explore the file and allows the use to choose that file
+        * 
+        */
         if (e.getSource() == openButton) {
             JFileChooser fileChooser = new JFileChooser();
             int returnValue = fileChooser.showOpenDialog(null);
@@ -60,7 +64,8 @@ public class FilePickerGUI extends JFrame implements ActionListener {
                 this.arr[0] = file;
             }
         }
-
+        //This button will take in the file path from the "Select File" Button and push that to the Main class to perform the calculations
+        //It will also catch if the file is not a .run file and promote the use to try again
         if (e.getSource() == calcButton){
             if(arr[0].contains(".run")){
                 try{
@@ -77,6 +82,7 @@ public class FilePickerGUI extends JFrame implements ActionListener {
         }
     }
 
+    //This method will open the Output file for the user so that he or she do not have to go searching for it, but the file path will still be listed in the text field
     public void openFileInNewWindow(String filePath) {
         JFrame frame = new JFrame("File Viewer");
         JTextArea textArea = new JTextArea(35, 60);
@@ -103,10 +109,6 @@ public class FilePickerGUI extends JFrame implements ActionListener {
             FilePickerGUI f = new FilePickerGUI();
             f.setLocationRelativeTo(null);
             f.setVisible(true);
-            
-             // ImageIcon icon = new ImageIcon(myImg);
-                
-// use icon here
             
         });
         
