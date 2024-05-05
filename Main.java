@@ -8,9 +8,9 @@ import java.util.List;
 
 /*
  * MAIN FILE FOR PROJECT
+ * Purpose: go through and make a output file with all of the information gathered and catch issues when they arise
  * 
- * ADD MORE COMMENTS HERE
- * 
+ * By: Jack Noyes
  */
 
 
