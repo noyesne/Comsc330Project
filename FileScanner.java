@@ -60,6 +60,7 @@ public class FileScanner {
     //Constructor, File argument: This constructor will be primarily used for the .GRP & .SEC files that will be parsed through later
     public FileScanner(File f) throws FileNotFoundException{
         try{
+            
             Scanner fileReader = new Scanner(f);
             int length = 0;
             while(fileReader.hasNext()){

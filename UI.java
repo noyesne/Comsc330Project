@@ -5,34 +5,30 @@ import java.io.File;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
+//import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.text.Text;
+//import javafx.event.ActionEvent;
+//import javafx.event.EventHandler;
+//import javafx.scene.text.Text;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Font; 
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
-import javafx.scene.text.TextAlignment;
+//import javafx.scene.text.TextAlignment;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
-import javafx.scene.paint.Color;
-import java.io.File;
-import jsjf.Main;
 
 
 public class UI extends Application
 {
-	@Override
+   
 	public void start(Stage primaryStage) 
 	{
       //Graphic Methods
-      Main m = new Main();
+     
       
       //Label, instructions on how to work the program
       Label instructions = new Label("\t \t Welcome! Please enter the RUN file path into the textfield! \n \tAlternatively, use the File Explore Button to navigate to the location of the Run File!");
@@ -47,7 +43,7 @@ public class UI extends Application
       
       //Textfield, shows the file path to the run file
       TextField link = new TextField();
-      link.setPrefWidth(1000);
+      link.setPrefWidth(500);
       link.setPrefHeight(30);
       
       
@@ -73,17 +69,25 @@ public class UI extends Application
       //Calculate button will NOT do anything unless there is a file path in "link"
       
       //Let's the user know it's moving fine    
-      results.setText("WORKING...");
-              
-      // Whatever gets put into link, will be placed into string array, and the passed through the main method
-      String[] arr = {link.getText()};    
-      try{
-         m.main(arr);
-         }catch(Exception ex){
-            System.out.println("SOMETHING WENT WRONG:" + ex);
+         results.setText("WORKING...");
+               
+         // Whatever gets put into link, will be placed into string array, and the passed through the main method
+         String[] arr = {link.getText()};    
+         if(arr[0].contains(".run")){
+         try{
+            Main.main(arr);
+            }catch(Exception ex){
+               System.out.println("SOMETHING WENT WRONG:" + ex);
             }
+            results.setText(Main.getSendOver());  
+         }
+         else{
             
-      }  );
+            results.setText("Please ensure that the file chosen ends in '.run' ");
+         }
+      });
+      
+      
 
       //Opens what is essentially File Explorer
       FileChooser fileChooser = new FileChooser();
@@ -148,21 +152,21 @@ public class UI extends Application
       
       
       //Info to initialize the program
-		Scene scene = new Scene(pane, 800, 800);
+		Scene scene = new Scene(pane, 500, 500);
       
       
       //The window itself
 		primaryStage.setTitle("GPA Statistic Calculator");
 	    primaryStage.setScene(scene);
 	    primaryStage.show();
-
+       
 	}
-	
+   
 
 	public static void main(String[] args)
 	   {
 	      //args: argument passed in through the command line
-	      Application.launch(args);   //Launches program
+         Application.launch(args);//Launches program
 	   }  //End of main
-
+   
 }

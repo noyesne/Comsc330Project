@@ -25,10 +25,10 @@ public class Main {
     private static String runName = ""; 
     private static double[][] sec_avg; //stores the section gpas in a column and the next column is for the next group
     private static LinkedList<Double> individual; //this gets the individual students grade (has to be reset after every run
-    public static LinkedList<StudentNode> firstaList = new LinkedList<StudentNode>(); //stores all students that have an A in a group
-    public static LinkedList<StudentNode> firstfList = new LinkedList<StudentNode>(); //stroes all Students that have an F in a group
-    public static LinkedList<StudentNode> aList = new LinkedList<StudentNode>(); //stores all students that have more than one A in a Group
-    public static LinkedList<StudentNode> fList = new LinkedList<StudentNode>(); //stores all students that have more than one F in a Group
+    public static LinkedList<StudentNode> firstaList; //stores all students that have an A in a group
+    public static LinkedList<StudentNode> firstfList;//stroes all Students that have an F in a group
+    public static LinkedList<StudentNode> aList; //stores all students that have more than one A in a Group
+    public static LinkedList<StudentNode> fList; //stores all students that have more than one F in a Group
     private static String [] studentNums; //Stores Section Names
     private static double sectionGPA;
     private static double sectionCH;
@@ -43,11 +43,16 @@ public class Main {
     public static boolean aCatch = false;
     public static boolean fCatch = false;
     public static String tempSec = "";
+    private static String sendOver;
+    private static String output;
     
     
     /*
      * THIS METHOD SHOULD BE THE ONE RAN FOR THE INTERFACE
      */
+    
+    
+    
     public static void main(String[] args) throws FileNotFoundException {
     	Scanner input = new Scanner(System.in);
     	
@@ -55,17 +60,25 @@ public class Main {
     	//This part is made 
     	
     	System.out.println("Please enter the .RUN file you wish to run"); //YOU CAN TAKE THIS LINE
-    	String s = input.nextLine(); //args[counter-1]
+    	String s = args[0];
     	System.out.println("WORKING....");//YOU CAN TAKE THIS LINE
     	
         String[] arr = setRunFile(s); //This gets the Array of .grp files
        
         
         try {
-        	FileWriter fw = new FileWriter(fileParent + "\\Output"+ counter + ".txt");
+            String f = fileParent + "\\Output"+ counter + ".txt";
+            //File fi = new File(f);
+            output = f;
+        	FileWriter fw = new FileWriter(f);
         	
-        	fw.write(runName + "\n\n\n\n");
+        	fw.write(runName + "\n");
         for(int x = 0; x < arr.length; x++){ //runs for the amount of files there are within the .run
+        firstaList = new LinkedList<StudentNode>();
+        firstfList = new LinkedList<StudentNode>();
+        aList = new LinkedList<StudentNode>();
+        fList = new LinkedList<StudentNode>();
+
         totalCH = 0;
         groupGPA = 0;
         individual = new LinkedList<Double>(); //this is essential to make sure that totalStudents would reset with every run
@@ -144,7 +157,7 @@ public class Main {
 	        	aList = fixList(firstaList); //this takes the list created in the runStats method and fixes it to see only the student more tha
 	        	aCatch = tempCatch; //this is to catch a certain error and promotes the message below.
 	        	if(aCatch) {
-        			fw.write("There was an error in the file which occurred when the same student was in the same sectioon with the same grade\nPlease check " + tempSec +" and make sure that the file has correct data\n\n");
+        			fw.write("There was an error in the file which occurred when the same student was in the same section with the same grade\nPlease check " + tempSec +" and make sure that the file has correct data\n\n");
         		}
 	        	if(aList.isEmpty()) {
 	        		fw.write("There were no students in " + groupName + " that had more than one A(+ or -)\n");
@@ -172,7 +185,7 @@ public class Main {
 		        	while(!fList.isEmpty()) {
 		        		
 		        		StudentNode st  = fList.remove();
-		        		String t = st.name +": "+st.section;
+		        		String t = st.name+": "+st.section;
 		        		fw.write(t + " \n");
 		        		
 		        	}
@@ -182,7 +195,7 @@ public class Main {
 	        	fw.write("\n\n");
 	        	piterator++; //piterator is used for the 2-D array 'sec_avg" as a way to go to the next column of the array
         	}
-        	System.out.println("RUN COMPLETE!\n file is stored as " + fileParent + "\\Output" + counter + ".txt");
+        	sendOver = "\t\t             RUN COMPLETE!\nFile is stored at:\n" + fileParent + "\\Output" + counter + ".txt";
         	fw.close();
         	
 			} catch (IOException e) {
@@ -201,9 +214,14 @@ public class Main {
     
     
             
+     public static String getSendOver(){
+        return sendOver;
+    }       
             
-            
-        
+    public static String getOutput(){
+        return output;
+    }
+
         	
             
 
@@ -234,6 +252,7 @@ public class Main {
         File f;
         FileScanner fScanner;
         String[] grpArray;
+       
         try{
             
             String x = s;

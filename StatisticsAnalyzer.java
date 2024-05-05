@@ -143,7 +143,7 @@ class Section {
 */
 
 class Grade {
-    private String courseId;
+   
     private String grade;
 
     public Grade(String grade) {
