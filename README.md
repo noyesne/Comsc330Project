@@ -1,5 +1,5 @@
 # Comsc330Project
-## Project Name: 
+## Project Name: .RUN file Tester
 ## Team members: Jack Noyes, Isabel Cyr, Nick Vieira, Dylan Gomes
 
 The following has the Manual Attached, please refer to it to understand how to use the product.
