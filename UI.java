@@ -1,4 +1,7 @@
 package jsjf;
+//THIS FILE IS NO LONGER USED IN THE PRODUCT BUT WAS KEPT TO SHOW THE DEVELOPMENT PROCESS
+
+
 
 //Imports
 import java.io.File;
