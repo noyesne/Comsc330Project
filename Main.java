@@ -8,13 +8,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 /*
- * UPDATED MAIN:
- * 3/19/24
- * IMPLEMENT A DATA STUCTURE IF POSSIBLE
- * PRINT ALL OF THE STATISTICS
- * MAKE THE FILEWRITER
+ * MAIN FILE FOR PROJECT
  * 
- * 
+ * ADD MORE COMMENTS HERE
  * 
  */
 
@@ -26,6 +22,7 @@ public class Main {
     private static String groupName = "";
     private static String fileParent = "";
     private static String sectionName ="";
+    private static String runName = ""; 
     private static double[][] sec_avg;
     private static LinkedList<Double> individual = new LinkedList<Double>(); //this gets the individual students grade
     public static LinkedList<String> firstaList = new LinkedList<String>();
@@ -40,13 +37,22 @@ public class Main {
     private static double totalCH;
     private static int iterator = 0;
     private static StatisticsAnalyzer stats = new StatisticsAnalyzer();
-
+    private static boolean stopper = true;
+    static int counter = 1; 
+    
     public static void main(String[] args) throws FileNotFoundException {
     	
+    	
         String[] arr = setRunFile(); //This gets the Array of .grp files
+        if(arr == null) {
+        	stopper = false; // attempted loop iterator
+        	return;
+        }
        
         try {
-        	FileWriter fw = new FileWriter(fileParent + "\\Output.txt");
+        	FileWriter fw = new FileWriter(fileParent + "\\Output"+ counter + ".txt");
+        	
+        	fw.write(runName + "\n\n\n\n");
         for(int x = 0; x < arr.length; x++){ //runs for the amount of files there are within the .run
         
         String[] grpArray = runGRP(arr[x]); // makes an array of SEC in the x-th spot in the RUN array
@@ -69,46 +75,47 @@ public class Main {
 	        studentNums[i] = sectionName;  //stores each individual section name for the purposes of formatting the output file
             runStats(names, grades);
             
-	        
-	        
-            sec_avg[i][iterator] = sectionGPA; 
             groupGPA += sectionGPA * sectionCH;
             totalCH += sectionCH;
+	        
+            sec_avg[i][iterator] = sectionGPA; 
+            
         
-            } //end of grp
+            } //end of grp file( all of the sections) not to be confused with and of all grp.
         	double gpaAvg = groupGPA/totalCH;
            // System.out.println(gpaAvg);
             double stDev = standardDeviation(gpaAvg);
-            
-				fw.write("Total Students " + totalStudents + " STDEV: "  + stDev + "\n");
+            	fw.write("GROUP: " + groupName + " GPA: " + String.format("%,.2f", gpaAvg) + " \n");
+				fw.write("Total Significant (NOT “I”, “W”, “P”, “NP” ) Students: " + totalStudents + "\nSTDEV: "  + stDev + "\n");
 				for(int k = 0; k < sec_avg.length; k++) {
-	                fw.write(studentNums[k] + " GPA: " +  String.format("%,.2f",sec_avg[k][iterator]) + " ");
+	                fw.write(studentNums[k] + " GPA: " +  String.format("%,.2f",sec_avg[k][iterator]) + " | ");
 	                double z = stats.calculateZScore(sec_avg[k][iterator], gpaAvg, stDev );
-	                fw.write("Z Score: " + z + "\n");
+	                fw.write("Z Score: " + z + " | ");
 	                if(z >= 2.0){
-	                    System.out.println(true);
+	                    fw.write("is Signifacntly different: TRUE \n");
 	                    break;
 	                }else{
 	                    if(z<= -2.0){
-	                        System.out.println(true);
+	                    	fw.write("is Signifacntly different: TRUE \n");
 	                        break;
 	                    }
-	                    System.out.println(false);
+	                    fw.write("is Signifacntly different: FALSE \n");
 	                }
 	                
 	        		//System.out.println("Section "+ studentNums[k] + " is: " + stats.isSectionGPASignificantlyDifferent(sec_avg[k][iterator], gpaAvg, stDev, totalStudents));
 	        	}
+				fw.write("\n");
 	        	
 	        	aList = fixList(firstaList);
 	        	if(aList.isEmpty()) {
 	        		fw.write("There were no students in " + groupName + " that had more than one A(+ or -)\n");
 	        	}else {
-		        	fw.write("List of Students with more than one A(+ or -) in " + groupName + ": \n" );
+		        	fw.write("List of Students with more than one A(+ or -) in " + groupName + ": \n\n" );
 		        	while(!aList.isEmpty()) {
 		        		String s = aList.remove();
 		        		fw.write(s + " \n");
-		        		
 		        	}
+		        	fw.write("\n");
 	        	}
 	        	fList = fixList(firstfList);
 	        	if(fList.isEmpty()) {
@@ -120,54 +127,22 @@ public class Main {
 		        	}
 	        	}
         	//end main loop
+	        	fw.write("\n\n");
 	        	iterator++;
         	}
+        	System.out.println("RUN COMPLETE!\n file is stored as " + fileParent + "\\Output" + counter + ".txt");
         	fw.close();
+        	counter++;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-            /*
-        	for(int k = 0; k < sec_avg.length; k++) {
-                System.out.println(studentNums[k] + " GPA: " +  String.format("%,.2f",sec_avg[k][iterator]));
-                double z = stats.calculateZScore(sec_avg[k][iterator], gpaAvg, stDev );
-                System.out.println("Z Score: " + z);
-                if(z >= 2.0){
-                    System.out.println(true);
-                    break;
-                }else{
-                    if(z<= -2.0){
-                        System.out.println(true);
-                        break;
-                    }
-                    System.out.println(false);
-                }
-                
-        		//System.out.println("Section "+ studentNums[k] + " is: " + stats.isSectionGPASignificantlyDifferent(sec_avg[k][iterator], gpaAvg, stDev, totalStudents));
-        	}
         	
-        	aList = fixList(firstaList);
-        	if(aList.isEmpty()) {
-        		System.out.println("There were no students in " + groupName + " that had more than one A(+ or -)");
-        	}else {
-	        	System.out.println("List of Students with more than one A(+ or -) in " + groupName + ": ");
-	        	while(!aList.isEmpty()) {
-	        		System.out.println(aList.remove());
-	        	}
-        	}
-        	fList = fixList(firstfList);
-        	if(fList.isEmpty()) {
-        		System.out.println("There were no students in " + groupName + " that had more than one D(+ or -) or F");
-        	}else {
-	        	System.out.println("List of Students with more than one D(+ or -) or F in " + groupName + ": ");
-	        	while(!fList.isEmpty()) {
-	        		System.out.println(fList.remove());
-	        	}
-        	}
-        	iterator++;
-        	*/
+    	}
+    
             
-        }    
+            
+            
         
         	
             
@@ -198,8 +173,12 @@ public class Main {
         try{
             kybd = new Scanner(System.in);
             String x = kybd.nextLine();
-            System.out.println();
+            
+            
+            
+            
             f = new File(x);
+            runName = f.getName();
             kybd.close();
             fScanner = new FileScanner(f);
 
@@ -221,8 +200,11 @@ public class Main {
         return grpArray = new String[0];
         
     }
-    //Original Parse method wont work here.
-    //Can not iterate through
+    /*
+     * runGRP: 
+     * Purpose: TO create an array of all SEC file with their specific paths, uses fileScanner class's method of parseRunFile(File f) 
+     *
+     */
     public static String[] runGRP(String s)throws FileNotFoundException{
         String[] section; 
         File f = new File(s);
@@ -265,6 +247,7 @@ public class Main {
           }
           StatisticsAnalyzer stat = new StatisticsAnalyzer();
           sectionGPA += stat.computeSectionGPA(list, names);
+          System.out.println(sectionGPA);
     }
     public static double standardDeviation(double gpaAvg){
     // calculate the standard deviation
@@ -283,6 +266,7 @@ public class Main {
 
     }
     
+    //these 3 methods are called in the Statistic analyzer class as grades are being changed from letter to grade-point
 
     public void addElement(double e){
     	individual.add(e);
